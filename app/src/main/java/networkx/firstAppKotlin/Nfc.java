@@ -16,7 +16,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class Nfc extends AppCompatActivity {
 
@@ -58,18 +62,21 @@ public class Nfc extends AppCompatActivity {
             if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)
                 ||NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)
                 ||NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
-                Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_DATA);
-//                NdefMessage[] msgs = null;
-//                if (rawMsgs != null) {
-//                    msgs = new NdefMessage[rawMsgs.length];
-//                    for (int i = 0; i < rawMsgs.length; i++){
-//                        msgs[i] = (NdefMessage) rawMsgs[i];
-//                    }
-//                }
-//                buildTagViews(msgs);
-                Toast.makeText(this, "skja" + tag.getId(), Toast.LENGTH_SHORT).show();
+                byte[] tag = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
+                StringBuilder stb = new StringBuilder();
+
+                List<String> list = new ArrayList<>();
+                for(int i =0; i < tag.length; i++ ){
+                    list.add(Integer.toHexString(((int) tag[i] & 0xff)));
+                }
+                Collections.reverse(list);
+                list.forEach(va ->{
+                    stb.append(va);
+                });
+
+                Toast.makeText(this, "skja---->>>>>" +  stb.toString() , Toast.LENGTH_SHORT).show();
                 nfc_contents = (TextView) findViewById(R.id.infotag);
-                nfc_contents.setText(tag.getId().toString()+ "-----" + tag.getId());
+                nfc_contents.setText( stb.toString() );
             }
 
 //            NfcTest test = new NfcTest();
