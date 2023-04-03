@@ -37,28 +37,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView4" />
 
-    <EditText
-        android:id="@+id/editTextDate2"
-        android:layout_width="149dp"
-        android:layout_height="101dp"
-        android:layout_marginStart="150dp"
-        android:layout_marginTop="312dp"
-        android:clickable="true"
-        android:ems="10"
-        android:enabled="true"
-        android:inputType="date"
-        android:textColor="#FF5722"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView4"
-        tools:text="Select Date" />
-
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/saveA"
         android:layout_width="1000px"
         android:layout_height="wrap_content"
         android:layout_marginTop="504dp"
         android:backgroundTint="#FF5722"
-        android:text="Save"
+        android:text="Create a New Meeting"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,26 +62,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/filename_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="160dp"
         android:layout_marginTop="290dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="type here"
+        android:hint="Enter filename (without extension)"
+        android:inputType="text"
+        android:text="Enter Meeting Name"
         android:textColor="#838080"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="45dp"
-        android:layout_marginTop="350dp"
-        android:text="Select a Date:"
-        android:textColor="#F8F7F7"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -1,10 +1,11 @@
 package networkx.firstAppKotlin
 
-import CheckCard
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.widget.Button
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,12 +19,12 @@ class MainActivity : AppCompatActivity() {
         val goToScan = findViewById<Button>(R.id.button5)
 
         goToNewMeeting.setOnClickListener{
-            val intent = Intent(this, New_Meeting::class.java)
+            val intent = Intent(this, NewMeeting::class.java)
             startActivity(intent)
         }
 
         goToExistingMeetings.setOnClickListener{
-            val intent = Intent(this, Existing_Meetings::class.java)
+            val intent = Intent(this, ExistingMeetings::class.java)
             startActivity(intent)
         }
 
@@ -39,6 +40,29 @@ class MainActivity : AppCompatActivity() {
         goToScan.setOnClickListener{
             val intent = Intent(this, scan::class.java)
             startActivity(intent)
+        }
+
+
+            createFolderInDocuments()
+
+
+    }
+
+    private fun createFolderInDocuments(){
+        val documentsDirectory = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString())
+        val folderName = "CFMEU_Meetings"
+        val folderPath = "$documentsDirectory/$folderName"
+
+        val folder = File(folderPath)
+        if (!folder.exists()){
+            val created = folder.mkdir()
+            if(created) {
+                println("Folder created successfully.")
+            } else {
+                println("Failed to create folder")
+            }
+        } else {
+            println("Folder already exists")
         }
     }
 }
