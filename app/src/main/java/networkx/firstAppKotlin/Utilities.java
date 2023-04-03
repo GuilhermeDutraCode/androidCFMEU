@@ -19,6 +19,7 @@ public class Utilities {
             Path folder = Paths.get(URI, "CFMEU_Meetings/");
             Arrays.asList( folder.toFile().listFiles() ).forEach( file ->{
                 fileNames.add(file.getName().toString());
+                Log.d("File", "File=====>>>>" + file.getName().toString());
             });
 
         }catch (Exception e){
@@ -26,4 +27,11 @@ public class Utilities {
         }
         return fileNames;
     }
+
+//    public static void createFilesToTest(String path) throws IOException {
+//        for (int i  = 0; i< 10; i ++){
+//            File file = new File(path, "CFMEU_Meetings/" + UUID.randomUUID().toString().concat(".txt"));
+//            file.createNewFile();
+//        }
+//    }
 }
