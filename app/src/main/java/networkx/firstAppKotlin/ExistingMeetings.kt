@@ -26,8 +26,9 @@ class ExistingMeetings : AppCompatActivity() {
         setContentView(R.layout.fragment_existing_meetings)
 
         val documentsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-        val folderName = "CFMEU_Meetings"
+        val folderName = "/CFMEU_Meetings/"
         val folder = File(documentsDirectory, folderName)
+        Log.d("Path", "Directory path: ${folder.getAbsolutePath()}")
 
         meetingsRecyclerView = findViewById(R.id.meetingsRecyclerView)
         meetingsRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -35,12 +36,12 @@ class ExistingMeetings : AppCompatActivity() {
         meetingsRecyclerView.adapter = adapter
 
         listAllMeetings(folder)
-        //listAllMeetings(documentsDirectory)
+//        listAllMeetings(documentsDirectory)
 
         if (!folder.exists()) {
-            Log.d("ExistingMeetings", "Directory does not exist")
+            Log.d("Log", "Directory does not exist")
             return
-        } else (Log.d ("ExistingMeetings", "Directopry exists"))
+        } else (Log.d ("Log", "Directory exists"))
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             // Permission has already been granted
@@ -78,11 +79,11 @@ class ExistingMeetings : AppCompatActivity() {
 
     private fun listAllMeetings(directory: File) {
         if (!directory.exists()) {
-            Log.d("ExistingMeetings", "Directory does not exist")
+            Log.d("Log", "Directory does not exist: ${directory.path}")
             return
         }
         val files = directory.listFiles()
-        Log.d("ExistingMeetings", "Files found: ${files?.size}")
+        Log.d("Log", "Files found: ${files?.size}")
         if (files != null) {
             adapter.updateList(files)
         }

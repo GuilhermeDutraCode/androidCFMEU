@@ -4,14 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#020202"
+    android:background="#F8F6F6"
     tools:context=".NewMeeting">
 
-    <!-- TODO: Update blank fragment layout -->
+
     <FrameLayout
         android:id="@+id/fragment_new_meeting"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/textView4"
@@ -72,6 +75,30 @@
         android:inputType="text"
         android:text="Enter Meeting Name"
         android:textColor="#838080"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextDate2"
+        android:layout_width="189dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="380dp"
+        android:ems="10"
+        android:inputType="date"
+        android:text="Select Date"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="380dp"
+        android:text="Meeting Date"
+        android:textColor="#EFECEC"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

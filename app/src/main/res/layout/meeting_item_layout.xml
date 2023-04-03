@@ -8,7 +8,7 @@
         android:id="@+id/fileNameTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="#040303"
+        android:textColor="#F4EFEF"
         android:textSize="18sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
