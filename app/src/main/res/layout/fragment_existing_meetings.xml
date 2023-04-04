@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
+    android:textColor="@android:color/white"
     tools:context=".NewMeeting">
 
 
@@ -20,20 +21,41 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/meetingsRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="406dp"
+        android:layout_height="558dp"
+        android:layout_marginTop="46dp"
+        android:textColor="@android:color/white"
         android:padding="16dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        tools:layout_editor_absoluteX="4dp" />
 
 
     <ListView
         android:id="@+id/listViewFile"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#C3BBBB"
+        android:layout_width="403dp"
+        android:layout_height="552dp"
+        android:background="#FC6C40"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.969" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="322dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="166dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="187dp"
+        android:layout_marginBottom="27dp"
+        android:text="                     Select a meeting to delete:"
+        android:textColor="#F3EDED"
+        app:layout_constraintBottom_toTopOf="@+id/meetingsRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

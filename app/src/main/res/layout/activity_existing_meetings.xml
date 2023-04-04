@@ -6,4 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".Existing_Meetings">
 
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="281dp"
+        android:layout_height="118dp"
+        android:layout_marginStart="73dp"
+        android:layout_marginEnd="57dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/cfmeu"
+        tools:layout_editor_absoluteY="0dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

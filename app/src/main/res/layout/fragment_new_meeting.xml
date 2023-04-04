@@ -96,11 +96,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="200dp"
         android:layout_marginTop="380dp"
-        android:text="TextView"
+        android:text="Select Date"
         android:clickable="false"
         android:cursorVisible="false"
         android:focusable="false"
         android:focusableInTouchMode="false"
+        android:textColor="@android:color/white"
         android:hint="Enter date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
