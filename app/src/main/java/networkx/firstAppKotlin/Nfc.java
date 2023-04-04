@@ -24,10 +24,6 @@ import java.util.List;
 
 public class Nfc extends AppCompatActivity {
 
-    public static final String Error_Detected = "No NFC Tag Detected";
-    public static final String Write_Success = "Text Written Succesfully!";
-    public static final String Write_Error = "Failed to write text";
-
     NfcAdapter nfcAdapter;
     PendingIntent pendingIntent;
     IntentFilter writingTagFilters[];
@@ -74,7 +70,7 @@ public class Nfc extends AppCompatActivity {
                     stb.append(va);
                 });
 
-                Toast.makeText(this, "skja---->>>>>" +  stb.toString() , Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "skja---->>>>>" +  stb.toString() , Toast.LENGTH_SHORT).show();
                 nfc_contents = (TextView) findViewById(R.id.infotag);
                 nfc_contents.setText( stb.toString() );
             }
@@ -107,7 +103,7 @@ public class Nfc extends AppCompatActivity {
             setIntent(intent);
             readFromIntent(getIntent());
             if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(getIntent().getAction())){
-                    Toast.makeText(this, "aaaaaa", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "aaaaaa", Toast.LENGTH_SHORT).show();
 //                myTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             }
         }

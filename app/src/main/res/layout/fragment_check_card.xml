@@ -5,15 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    tools:context=".CheckCard">
+    tools:context=".NFC">
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="253dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="85dp"
-        android:layout_marginBottom="73dp"
+        android:layout_width="265dp"
+        android:layout_height="162dp"
+        android:layout_marginStart="77dp"
+        android:layout_marginEnd="69dp"
+        android:layout_marginBottom="144dp"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/cfmeu" />
@@ -22,36 +24,39 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="670dp"
+        android:layout_marginStart="77dp"
+        android:layout_marginTop="58dp"
+        android:layout_marginEnd="83dp"
         android:text="Scan a card to display its unique ID."
         android:textColor="#F6F4F4"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/imageView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="613dp"
+        android:layout_marginStart="66dp"
+        android:layout_marginTop="64dp"
         android:fontFamily="sans-serif-black"
         android:text="Card ID:"
         android:textColor="#F8F7F7"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
         android:id="@+id/infotag"
-        android:layout_width="52dp"
-        android:layout_height="32dp"
-        android:text="ss"
+        android:layout_width="110dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="65dp"
+        android:layout_marginEnd="83dp"
+        android:fontFamily="sans-serif-black"
         android:textColor="#F8F6F6"
         android:textSize="14sp"
-        tools:layout_editor_absoluteX="236dp"
-        tools:layout_editor_absoluteY="231dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

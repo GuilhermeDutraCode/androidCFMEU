@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         }
         goToScan.setOnClickListener{
-            val intent = Intent(this, scan::class.java)
+            val intent = Intent(this, Scan::class.java)
             startActivity(intent)
         }
 
