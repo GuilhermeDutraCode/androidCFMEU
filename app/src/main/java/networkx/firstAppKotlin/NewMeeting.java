@@ -92,8 +92,8 @@ public class NewMeeting extends AppCompatActivity {
     private Workbook createWorkbook() {
         Workbook ourWorkbook = new XSSFWorkbook();
 
-        Sheet sheet = ourWorkbook.createSheet("statSheet");
-        ourWorkbook.createSheet("testSheet");
+        Sheet sheet = ourWorkbook.createSheet("Active");
+        ourWorkbook.createSheet("Inactive");
         addData(sheet);
 
         return ourWorkbook;

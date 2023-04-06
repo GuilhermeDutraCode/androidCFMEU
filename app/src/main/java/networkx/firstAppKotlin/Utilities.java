@@ -3,13 +3,21 @@ package networkx.firstAppKotlin;
 import android.util.Log;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class Utilities {
@@ -34,4 +42,22 @@ public class Utilities {
 //            file.createNewFile();
 //        }
 //    }
+
+    public static void creteFileWithPermissions(File file){
+        try {
+            FileOutputStream f = new FileOutputStream(file);
+            String hello = "Hello world";
+            for(int i = 0; i < hello.toCharArray().length; i ++){
+                f.write( hello.toCharArray()[i] );
+            }
+            f.close();
+        } catch (FileNotFoundException e) {
+
+             throw new RuntimeException(e);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }
