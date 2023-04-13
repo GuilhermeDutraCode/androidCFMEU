@@ -151,22 +151,22 @@ public class Scan extends AppCompatActivity {
         String selectedFileName = intent.getStringExtra("selected_file");
         File documentsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
         File selectedFile = new File(documentsDirectory, "CFMEU_Meetings/" + selectedFileName);
-        File file = new File(getExternalFilesDir(null), "Documents/");
+        //File file = new File(getExternalFilesDir(null), "Documents/");
 
-//        try {
-//            OPCPackage opcPackage = OPCPackage.open( file );
-//            XSSFWorkbook wb = new XSSFWorkbook( opcPackage );
-//
-//            Sheet sheet = wb.createSheet();
-//
-//            Row row = sheet.createRow(2);
-//            row.setHeightInPoints(30);
-//
-//            opcPackage.close();
-//        } catch ( Exception e) {
-//          e.printStackTrace();
-//        }
-        Utilities.getFileXlsx(file);
+        try {
+            OPCPackage opcPackage = OPCPackage.open( selectedFile );
+            XSSFWorkbook wb = new XSSFWorkbook( opcPackage );
+
+            Sheet sheet = wb.createSheet();
+
+            Row row = sheet.createRow(2);
+            row.setHeightInPoints(30);
+
+            opcPackage.close();
+        } catch ( Exception e) {
+          e.printStackTrace();
+        }
+        //Utilities.getFileXlsx(file);
 
     }
 
