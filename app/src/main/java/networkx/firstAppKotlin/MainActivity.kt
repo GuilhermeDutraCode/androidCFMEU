@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
         }
         goToScan.setOnClickListener{
-            val intent = Intent(this, Scan::class.java)
+            val intent = Intent(this, SelectMeetingToScan::class.java)
             startActivity(intent)
         }
 
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
 
 
             createFolderInDocuments()
-            createMembersList(this)
+            //createMembersList(this)
 
     }
 
@@ -89,28 +89,28 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun createMembersList(context: Context){
-        val fileName = "tags.txt"
-        val file = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), fileName)
-
-        val manager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
-        val uri = Uri.parse("https://vic.cfmeu.org/sites/vic.cfmeu.org/files/tags.txt")
-        val request = DownloadManager.Request(uri)
-        request.setVisibleInDownloadsUi(true)
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
-
-        if (file.exists()) {
-            file.delete()
-        }
-
-        try {
-            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOCUMENTS, fileName)
-            val reference = manager.enqueue(request)
-        } catch (e: Exception) {
-            throw RuntimeException(e)
-        }
-    }
-
+//    private fun createMembersList(context: Context){
+//        val fileName = "tags.txt"
+//        val file = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), fileName)
+//
+//        val manager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
+//        val uri = Uri.parse("https://vic.cfmeu.org/sites/vic.cfmeu.org/files/tags.txt")
+//        val request = DownloadManager.Request(uri)
+//        request.setVisibleInDownloadsUi(true)
+//        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
+//
+//        if (file.exists()) {
+//            file.delete()
+//        }
+//
+//        try {
+//            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOCUMENTS, fileName)
+//            val reference = manager.enqueue(request)
+//        } catch (e: Exception) {
+//            throw RuntimeException(e)
+//        }
+//    }
+//
 
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,

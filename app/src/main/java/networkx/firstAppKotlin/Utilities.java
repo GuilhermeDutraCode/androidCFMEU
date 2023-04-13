@@ -1,6 +1,15 @@
 package networkx.firstAppKotlin;
 
+import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
+
+import androidx.core.content.FileProvider;
+
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,28 +45,34 @@ public class Utilities {
         return fileNames;
     }
 
-//    public static void createFilesToTest(String path) throws IOException {
-//        for (int i  = 0; i< 10; i ++){
-//            File file = new File(path, "CFMEU_Meetings/" + UUID.randomUUID().toString().concat(".txt"));
-//            file.createNewFile();
-//        }
-//    }
 
-    public static void creteFileWithPermissions(File file){
-        try {
-            FileOutputStream f = new FileOutputStream(file);
-            String hello = "Hello world";
-            for(int i = 0; i < hello.toCharArray().length; i ++){
-                f.write( hello.toCharArray()[i] );
-            }
-            f.close();
-        } catch (FileNotFoundException e) {
-
-             throw new RuntimeException(e);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public static Uri getImageUri(Context context, File file) {
+        Uri uri = null;
+        try{
+             uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
+
+        return uri;
     }
+
+    public static  void getFileXlsx(File folder){
+        File file = new File(folder, "teste.xlsx");
+        try {
+            OPCPackage opcPackage = OPCPackage.open( file );
+            XSSFWorkbook wb = new XSSFWorkbook( opcPackage );
+
+            Sheet sheet = wb.createSheet();
+
+            Row row = sheet.createRow(2);
+            row.setHeightInPoints(30);
+
+            opcPackage.close();
+        } catch ( Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

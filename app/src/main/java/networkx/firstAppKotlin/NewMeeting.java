@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -100,41 +102,19 @@ public class NewMeeting extends AppCompatActivity {
     }
 
     private void addData(Sheet sheet) {
-        Row row1 = sheet.createRow(0);
-        Row row2 = sheet.createRow(1);
-        Row row3 = sheet.createRow(2);
-        Row row4 = sheet.createRow(3);
-        Row row5 = sheet.createRow(4);
-        Row row6 = sheet.createRow(5);
-        Row row7 = sheet.createRow(6);
-        Row row8 = sheet.createRow(7);
+        int numCols = 2; // Number of columns
+        int numRows = 400; // Number of rows
 
-        createCell(row1, 0, "d");
-        createCell(row1, 1, "Score");
-
-        createCell(row2, 0, "Mike");
-        createCell(row2, 1, "470");
-
-        createCell(row3, 0, "Montessori");
-        createCell(row3, 1, "460");
-
-        createCell(row4, 0, "Sandra");
-        createCell(row4, 1, "380");
-
-        createCell(row5, 0, "Moringa");
-        createCell(row5, 1, "300");
-
-        createCell(row6, 0, "Torres");
-        createCell(row6, 1, "270");
-
-        createCell(row7, 0, "McGee");
-        createCell(row7, 1, "420");
-
-        createCell(row8, 0, "Gibbs");
-        createCell(row8, 1, "510");
+        // Create empty rows and cells
+        for (int i = 0; i < numRows; i++) {
+            //Row row = sheet.createRow(i);
+            for (int j = 0; j < numCols; j++) {
+                //createCell(row, j, "");
+            }
+        }
     }
 
-    private void createCell(Row sheetRow, int columnIndex, String cellValue) {
+    private void createCell(@NonNull Row sheetRow, int columnIndex, String cellValue) {
         Cell ourCell = sheetRow.createCell(columnIndex);
         ourCell.setCellValue(cellValue);
     }
