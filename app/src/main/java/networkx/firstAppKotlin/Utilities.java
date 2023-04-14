@@ -83,8 +83,6 @@ public class Utilities {
 
     public static void getFileXlsxByFolder2(File file){
         int sheetPosition = 0;
-
-        //File file = new File( folder, FILE_XLSX );
         try( InputStream inp = new FileInputStream( file ) ){
             Workbook wb = WorkbookFactory.create( inp );
             CreationHelper creationHelper = wb.getCreationHelper();

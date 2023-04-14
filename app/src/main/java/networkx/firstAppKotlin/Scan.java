@@ -151,8 +151,11 @@ public class Scan extends AppCompatActivity {
         String selectedFileName = intent.getStringExtra("selected_file");
         File documentsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
         File selectedFile = new File(documentsDirectory, "CFMEU_Meetings/" + selectedFileName);
-        //File file = new File(getExternalFilesDir(null), "Documents/");
+
         Utilities.getFileXlsxByFolder2( selectedFile );
+
+        //File file = new File(getExternalFilesDir(null), "Documents/");
+
 //        try {
 //            OPCPackage opcPackage = OPCPackage.open( selectedFile );
 //            XSSFWorkbook wb = new XSSFWorkbook( opcPackage );
