@@ -7,14 +7,20 @@ import android.util.Log;
 import androidx.core.content.FileProvider;
 
 import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -74,5 +80,41 @@ public class Utilities {
             e.printStackTrace();
         }
     }
+
+    public static void getFileXlsxByFolder2(File file){
+        int sheetPosition = 0;
+
+        //File file = new File( folder, FILE_XLSX );
+        try( InputStream inp = new FileInputStream( file ) ){
+            Workbook wb = WorkbookFactory.create( inp );
+            CreationHelper creationHelper = wb.getCreationHelper();
+            Sheet sheet = wb.getSheetAt( sheetPosition );
+            createContent( sheet, creationHelper );
+            try (OutputStream fileOut = new FileOutputStream( file )) {
+                wb.write( fileOut );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void createContent(Sheet sheet, CreationHelper creationHelper){
+        int coll = 10, rows = 5;
+        for(int i = 0; i <= rows ; i ++ ){
+            Row rowHeader = sheet.createRow( i );
+            for(int j = 0; j < coll; j ++){
+                Cell cell = rowHeader.getCell( j );
+                if (cell == null) {
+                    cell = rowHeader.createCell( j );
+                }
+                if(i == 0){
+                    cell.setCellValue( creationHelper.createRichTextString( "HEAD "+ j ) );
+                }else{
+                    cell.setCellValue( creationHelper.createRichTextString( "value " + j ) );
+                }
+            }
+        }
+    }
+
 
 }
