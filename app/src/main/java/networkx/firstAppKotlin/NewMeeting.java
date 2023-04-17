@@ -120,7 +120,8 @@ public class NewMeeting extends AppCompatActivity {
     }
 
     private void createExcelFile(Workbook ourWorkbook) {
-        File ourFileDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+       // File ourFileDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+        File ourFileDirectory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
         String folderName = "CFMEU_Meetings";
         String folderPath = ourFileDirectory + "/" + folderName;
 

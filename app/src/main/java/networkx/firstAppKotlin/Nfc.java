@@ -53,32 +53,30 @@ public class Nfc extends AppCompatActivity {
         writingTagFilters = new IntentFilter[] { tagDetected };
         }
 
-        private void readFromIntent(Intent intent){
-            String action = intent.getAction();
-            if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)
-                ||NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)
-                ||NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
-                byte[] tag = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
-                StringBuilder stb = new StringBuilder();
+    private void readFromIntent(Intent intent) {
+        String action = intent.getAction();
+        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)
+                || NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)
+                || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
+            byte[] tag = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
 
-                List<String> list = new ArrayList<>();
-                for(int i =0; i < tag.length; i++ ){
-                    list.add(Integer.toHexString(((int) tag[i] & 0xff)));
+            StringBuilder sb = new StringBuilder();
+            for (int i = tag.length - 1; i >= 0; i--) {
+                int value = tag[i] & 0xff;
+                String hexString = Integer.toHexString(value);
+                if (value < 16) {
+                    sb.append("0");
                 }
-                Collections.reverse(list);
-                list.forEach(va ->{
-                    stb.append(va);
-                });
-
-//                Toast.makeText(this, "skja---->>>>>" +  stb.toString() , Toast.LENGTH_SHORT).show();
-                nfc_contents = (TextView) findViewById(R.id.infotag);
-                nfc_contents.setText( stb.toString() );
+                sb.append(hexString.toUpperCase());
             }
 
-//            NfcTest test = new NfcTest();
-//            test.readFromIntent(intent);
-         }
-        private void buildTagViews(NdefMessage[] msgs){
+            String hexString = sb.toString();
+            nfc_contents = (TextView) findViewById(R.id.infotag);
+            nfc_contents.setText(hexString);
+        }
+    }
+
+    private void buildTagViews(NdefMessage[] msgs){
             if (msgs == null || msgs.length == 0) return;
 
             String text = "";

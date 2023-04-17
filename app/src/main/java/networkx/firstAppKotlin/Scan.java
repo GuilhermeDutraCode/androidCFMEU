@@ -127,9 +127,7 @@ public class Scan extends AppCompatActivity {
             }
         }
 
-
-        extracted();
-
+      extracted();
 
         // Request permission to read and write to external storage
         ActivityCompat.requestPermissions(
@@ -149,27 +147,12 @@ public class Scan extends AppCompatActivity {
         // Retrieve the selected file from the intent
         Intent intent = getIntent();
         String selectedFileName = intent.getStringExtra("selected_file");
-        File documentsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+       // File documentsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+        File documentsDirectory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
         File selectedFile = new File(documentsDirectory, "CFMEU_Meetings/" + selectedFileName);
 
-        Utilities.getFileXlsxByFolder2( selectedFile );
-
-        //File file = new File(getExternalFilesDir(null), "Documents/");
-
-//        try {
-//            OPCPackage opcPackage = OPCPackage.open( selectedFile );
-//            XSSFWorkbook wb = new XSSFWorkbook( opcPackage );
-//
-//            Sheet sheet = wb.createSheet();
-//
-//            Row row = sheet.createRow(2);
-//            row.setHeightInPoints(30);
-//
-//            opcPackage.close();
-//        } catch ( Exception e) {
-//          e.printStackTrace();
-//        }
-        //Utilities.getFileXlsx(file);
+        //Utilities.getFileXlsxByFolder2( selectedFile );
+        Utilities.activeUserIntoExcel(selectedFile);
 
     }
 
@@ -188,17 +171,17 @@ public class Scan extends AppCompatActivity {
             }
             Collections.reverse(list);
             list.forEach(va -> {
-                stb.append(va);
+                stb.append(va.toUpperCase());
             });
 
             String tagId = stb.toString(); // Define tagId variable with the tag ID
-
 
             nfc_contents = (TextView) findViewById(R.id.infotag);
             nfc_contents.setText(tagId);
 
             if (tags.contains(tagId)) {
                 status.setText("Active");
+                //extracted();
             } else {
                 status.setText("Inactive");
             }
@@ -212,7 +195,7 @@ public class Scan extends AppCompatActivity {
 
         byte[] payLoad = msgs[0].getRecords()[0].getPayload();
         String textEnconding = ((payLoad[0] & 128) == 0) ? "UTF-8" : "UTF-16";
-        int languageCodeLength = payLoad[0] & 0063; //Get The Language code, e.g 'En'
+        int languageCodeLength = payLoad[0] & 0063; //Get The Language code, e.g 'Pt
 
         try {
             //get the text
@@ -256,29 +239,6 @@ public class Scan extends AppCompatActivity {
     }
 
 
-    private void addHelloWorldToExcel(File selectedFile) throws IOException {
-        // Open the selected Excel file
-        FileInputStream fis = new FileInputStream(selectedFile);
-        XSSFWorkbook workbook = new XSSFWorkbook(fis);
-
-        // Get the first sheet of the workbook
-        XSSFSheet sheet = workbook.getSheetAt(0);
-
-        // Create a new row at the end of the sheet
-        XSSFRow row = sheet.createRow(sheet.getLastRowNum() + 1);
-
-        // Create a new cell in the row and set its value to "Hello World"
-        XSSFCell cell = row.createCell(0);
-        cell.setCellValue("Hello World");
-
-        // Save the changes to the Excel file
-        FileOutputStream fos = new FileOutputStream(selectedFile);
-        workbook.write(fos);
-
-        // Close the input and output streams
-        fis.close();
-        fos.close();
-    }
 
 }
 

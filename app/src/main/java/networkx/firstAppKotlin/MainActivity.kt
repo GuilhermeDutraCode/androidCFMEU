@@ -1,10 +1,7 @@
 package networkx.firstAppKotlin
 
-import android.app.DownloadManager
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.widget.Button
@@ -13,8 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import java.io.File
-import java.io.OutputStream
-import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
 
@@ -68,12 +63,31 @@ class MainActivity : AppCompatActivity() {
 
             createFolderInDocuments()
             //createMembersList(this)
-
+            createDeletedFolder()
     }
 
     private fun createFolderInDocuments(){
-        val documentsDirectory = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString())
+        val documentsDirectory = File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).toString())
         val folderName = "CFMEU_Meetings"
+        val folderPath = "$documentsDirectory/$folderName"
+
+        val folder = File(folderPath)
+        if (!folder.exists()){
+            val created = folder.mkdir()
+            if(created) {
+                println("Folder created successfully.")
+            } else {
+                println("Failed to create folder")
+            }
+        } else {
+            println("Folder already exists")
+        }
+    }
+
+    private fun createDeletedFolder(){
+
+        val documentsDirectory = File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).toString())
+        val folderName = "Deleted_Meetings"
         val folderPath = "$documentsDirectory/$folderName"
 
         val folder = File(folderPath)

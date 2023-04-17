@@ -18,8 +18,7 @@ class ExistingMeetings : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_existing_meetings)
-        val documentsDirectory =
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+        val documentsDirectory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
         val arrayAdapter: ArrayAdapter<*>
         val listView = findViewById<ListView>(R.id.listViewFile)
 
@@ -32,17 +31,22 @@ class ExistingMeetings : AppCompatActivity() {
 
         listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             val fileToDelete = File(
-                documentsDirectory.absolutePath + "/CFMEU_Meetings",
+                (documentsDirectory?.absolutePath ?: null) + "/CFMEU_Meetings",
                 arrayAdapter.getItem(position)!!
             )
             val builder = AlertDialog.Builder(this)
             builder.setTitle("Delete Meeting")
             builder.setMessage("Are you sure you want to delete this meeting?")
             builder.setPositiveButton("Yes") { _, _ ->
-                if (fileToDelete.delete()) {
+                val deletedMeetingsDir = File(documentsDirectory, "Deleted_Meetings")
+                if (!deletedMeetingsDir.exists()) {
+                    deletedMeetingsDir.mkdir()
+                }
+                val newFile = File(deletedMeetingsDir, fileToDelete.name)
+                if (fileToDelete.renameTo(newFile)) {
                     Toast.makeText(
                         applicationContext,
-                        "Meeting deleted successfully",
+                        "Meeting moved to Deleted Meetings folder",
                         Toast.LENGTH_SHORT
                     ).show()
                     arrayAdapter.remove(arrayAdapter.getItem(position))

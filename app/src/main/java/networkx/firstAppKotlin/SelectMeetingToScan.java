@@ -18,7 +18,7 @@ public class SelectMeetingToScan extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_existing_meetings);
 
-        File documentsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+        File documentsDirectory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_list_item_1,
