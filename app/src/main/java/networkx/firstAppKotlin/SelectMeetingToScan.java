@@ -1,6 +1,7 @@
 package networkx.firstAppKotlin;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -32,7 +33,16 @@ public class SelectMeetingToScan extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedFile = (String) parent.getItemAtPosition(position);
+
+                SharedPreferences sp = getSharedPreferences("key", MODE_PRIVATE);
+                SharedPreferences.Editor ed = sp.edit();
+               // ed.putString("selected_file", selectedFile);
+                ed.putString("selected_file", selectedFile);
+                ed.commit();
+
+
                 Intent intent = new Intent(SelectMeetingToScan.this, Scan.class);
+                //intent.putExtra("selected_file", selectedFile);
                 intent.putExtra("selected_file", selectedFile);
                 startActivity(intent);
             }

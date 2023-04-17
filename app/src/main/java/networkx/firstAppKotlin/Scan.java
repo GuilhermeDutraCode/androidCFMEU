@@ -1,12 +1,13 @@
 package networkx.firstAppKotlin;
 
+
 import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
@@ -16,34 +17,14 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.ss.usermodel.Cell;
-
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -71,6 +52,8 @@ public class Scan extends AppCompatActivity {
 
     List<String> tags;
 
+    private TextView countTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +63,7 @@ public class Scan extends AppCompatActivity {
         status = (TextView) findViewById(R.id.status);
 
         context = this;
-
+        countTextView = findViewById(R.id.countTextView);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (nfcAdapter == null) {
             Toast.makeText(this, "this deveice doesnt supoort nfc", Toast.LENGTH_SHORT).show();
@@ -127,7 +110,7 @@ public class Scan extends AppCompatActivity {
             }
         }
 
-      extracted();
+      //extracted();
 
         // Request permission to read and write to external storage
         ActivityCompat.requestPermissions(
@@ -140,21 +123,50 @@ public class Scan extends AppCompatActivity {
 
     }
 
-    private void extracted() {
+    private void extracted(String tag) {
         count = count ++;
         Log.i("COUNT", "-------->" + count);
         //Code to check if we are getting the selected file and are able to edit it.
         // Retrieve the selected file from the intent
         Intent intent = getIntent();
         String selectedFileName = intent.getStringExtra("selected_file");
+
+        if( selectedFileName == null ){
+            SharedPreferences sp=getSharedPreferences("key", Context.MODE_PRIVATE);
+            selectedFileName = sp.getString("selected_file","");
+            selectedFileName = Utilities.putFormattedName(selectedFileName);
+        }
+
        // File documentsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
         File documentsDirectory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
         File selectedFile = new File(documentsDirectory, "CFMEU_Meetings/" + selectedFileName);
 
         //Utilities.getFileXlsxByFolder2( selectedFile );
-        Utilities.activeUserIntoExcel(selectedFile);
 
+        Utilities.activeUserIntoExcel(selectedFile, tag, countTextView);
+
+        int count = Integer.parseInt(countTextView.getText().toString());
+        count++;
+        countTextView.setText(String.valueOf(count));
     }
+
+    private void extracted2(String tag) {
+        Intent intent = getIntent();
+        String selectedFileName = intent.getStringExtra("selected_file");
+
+        if( selectedFileName == null ){
+            SharedPreferences sp=getSharedPreferences("key", Context.MODE_PRIVATE);
+            selectedFileName = sp.getString("selected_file","");
+        }
+
+        // File documentsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+        File documentsDirectory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+        File selectedFile = new File(documentsDirectory, "CFMEU_Meetings/" + selectedFileName);
+
+        //Utilities.getFileXlsxByFolder2( selectedFile );
+        Utilities.inactiveUserIntoExcel(selectedFile, tag);
+    }
+
 
 
     private void readFromIntent(Intent intent) {
@@ -181,9 +193,10 @@ public class Scan extends AppCompatActivity {
 
             if (tags.contains(tagId)) {
                 status.setText("Active");
-                //extracted();
+                extracted(tagId);
             } else {
                 status.setText("Inactive");
+                extracted2(tagId);
             }
         }
     }
