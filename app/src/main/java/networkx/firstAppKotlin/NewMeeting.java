@@ -10,13 +10,18 @@ import java.util.Locale;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,6 +38,8 @@ public class NewMeeting extends AppCompatActivity {
     private File directory;
     private EditText dateEdt;
     private EditText fileNameEditText;
+
+    private TextView meetingName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,24 +148,42 @@ public class NewMeeting extends AppCompatActivity {
         String dateStr = dateEdt.getText().toString().trim();
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
 
+        TextView meetingName = findViewById(R.id.meetingName);
 
         try {
             Date date = sdf.parse(dateStr);
             sdf.applyPattern("yyyy-MM-dd");
             String formattedDate = sdf.format(date);
             String fileName = formattedDate + "__" + fileNameInput + ".xlsx";
+            String displayName = fileNameInput + "  " + formattedDate;
 
             File excelFile = new File(folderPath, fileName);
 
-            try {
-                FileOutputStream fileOut = new FileOutputStream(excelFile);
-                ourWorkbook.write(fileOut);
-                fileOut.close();
-                Toast.makeText(this, "Meeting created", Toast.LENGTH_SHORT).show();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Failed to create file", Toast.LENGTH_SHORT).show();
+            if(excelFile.exists()){
+               // Toast.makeText(this, "Already have a meeting with this name", Toast.LENGTH_SHORT).show();
+                String errorMes = "Error: Meeting with this name already exists.";
+                SpannableString spannableString = new SpannableString(errorMes);
+                ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.RED);
+                spannableString.setSpan(colorSpan, 0, errorMes.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+
+                meetingName.setText(spannableString);
+            } else {
+                try {
+                    FileOutputStream fileOut = new FileOutputStream(excelFile);
+                    ourWorkbook.write(fileOut);
+                    fileOut.close();
+                   // Toast.makeText(this, "Meeting created", Toast.LENGTH_SHORT).show();
+                    fileNameEditText.setText("");
+                    dateEdt.setText("");
+                    meetingName.setText(displayName);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Failed to create file", Toast.LENGTH_SHORT).show();
+                }
             }
+
+
         } catch (ParseException e) {
             e.printStackTrace();
             Toast.makeText(this, "Invalid date format", Toast.LENGTH_SHORT).show();

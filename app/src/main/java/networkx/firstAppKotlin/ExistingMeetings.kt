@@ -32,7 +32,7 @@ class ExistingMeetings : AppCompatActivity() {
         listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             val fileToDelete = File(
                 (documentsDirectory?.absolutePath ?: null) + "/CFMEU_Meetings",
-                arrayAdapter.getItem(position)!!
+                Utilities.putFormattedName(arrayAdapter.getItem(position)!!)
             )
             val builder = AlertDialog.Builder(this)
             builder.setTitle("Delete Meeting")

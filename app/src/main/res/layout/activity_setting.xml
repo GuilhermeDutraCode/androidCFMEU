@@ -7,32 +7,101 @@
     android:background="#000000">
 
 
+    <TextView
+        android:id="@+id/tPath"
+        android:layout_width="351dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginEnd="30dp"
+        android:text="\Galaxy A23 5G > Internal storage > Android > data >DelegateMeeting.App >  files > Documents "
+        android:textColor="#FAF7F7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="242dp"
+        android:text="Path to Tags.txt file"
+        android:textAllCaps="false"
+        android:textColor="#F4F4F4"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dPath" />
+
+    <TextView
+        android:id="@+id/dPath"
+        android:layout_width="351dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="31dp"
+        android:text="\Galaxy A23 5G > Internal storage > Android > data >DelegateMeeting.App >  files > Documents > Deleted_Meetings"
+        android:textColor="#FAF7F7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="43dp"
+        android:layout_marginEnd="196dp"
+        android:text="Path to Deleted Meetings "
+        android:textAllCaps="false"
+        android:textColor="#F4F4F4"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sPath" />
+
     <ImageView
         android:id="@+id/imageView7"
         android:layout_width="239dp"
         android:layout_height="120dp"
+        android:layout_marginStart="86dp"
+        android:layout_marginEnd="86dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/cfmeu"
-        tools:layout_editor_absoluteX="86dp"
         tools:layout_editor_absoluteY="2dp" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="43dp"
+        android:layout_marginEnd="142dp"
         android:text="Path to the Meetings Workbooks:"
         android:textAllCaps="false"
         android:textColor="#F4F4F4"
         android:textSize="16sp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="29dp"
-        tools:layout_editor_absoluteY="165dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView7" />
 
     <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="This PC\Galaxy A23 5G\Internal storage\Android\data\networkx.firstAppKotlin\files\Documents\CFMEU_Meetings"
+        android:id="@+id/sPath"
+        android:layout_width="351dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="31dp"
+        android:text="\Galaxy A23 5G > Internal storage > Android > data >DelegateMeeting.App >  files > Documents > CFMEU_Meetings"
         android:textColor="#FAF7F7"
-        tools:layout_editor_absoluteX="29dp"
-        tools:layout_editor_absoluteY="200dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 </androidx.constraintlayout.widget.ConstraintLayout>

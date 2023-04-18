@@ -1,6 +1,5 @@
 package networkx.firstAppKotlin;
 
-
 import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -8,23 +7,33 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,6 +59,9 @@ public class Scan extends AppCompatActivity {
     TextView nfc_contents;
     TextView status;
 
+    TextView date;
+
+    TextView name;
     List<String> tags;
 
     private TextView countTextView;
@@ -110,24 +122,74 @@ public class Scan extends AppCompatActivity {
             }
         }
 
-      //extracted();
 
-        // Request permission to read and write to external storage
+        displayMeetingInfo();
+
+
         ActivityCompat.requestPermissions(
                 this,
                 PERMISSIONS_STORAGE,
                 REQUEST_EXTERNAL_STORAGE
         );
 
+    }
+
+    private void displayMeetingInfo(){
+        Intent intent = getIntent();
+        String selectedFileName = intent.getStringExtra("selected_file");
+        String[] parts = selectedFileName.split(" ");
+        if (parts.length == 2) {
+            String date = parts[1];
+            String nameWithExtension = parts[0];
+            String[] nameParts = nameWithExtension.split("\\.");
+            String name = nameParts[0];
+
+           //return date + "__" + name + ".xlsx";
+            TextView dateTextView = (TextView) findViewById(R.id.date);
+            TextView nameTextView = (TextView) findViewById(R.id.name);
+            dateTextView.setText(date);
+            nameTextView.setText(name);
+
+        }
+        selectedFileName =  Utilities.putFormattedName(selectedFileName);
+        File documentsDirectory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+        File selectedFile = new File(documentsDirectory, "CFMEU_Meetings/" + selectedFileName);
+        try ( InputStream inp = new FileInputStream(selectedFile)){
+            Workbook wb = WorkbookFactory.create(inp);
+            CreationHelper creationHelper = wb.getCreationHelper();
+            Sheet sheet = wb.getSheet("Active");
+            //int lastRow = -1; // get last row with content
+
+            int lastRow = sheet.getLastRowNum(); // get last row with content
+//            int tagCount = countTags(sheet);
+            //createContent(sheet, creationHelper, lastRow);
+            //createContent2(sheet, creationHelper, lastRow, tag);
+//            try (OutputStream fileOut = new FileOutputStream( selectedFileName )) {
+//                wb.write(fileOut);
+//            }
+
+            TextView countTextView = (TextView) findViewById(R.id.countTextView);
+            countTextView.setText(String.valueOf(lastRow));
+
+           // TextView countTextView = view.findViewById(R.id.countTextView);
+            //countTextView.setText(String.valueOf(lastRow));
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+        if( selectedFileName == null ){
+            SharedPreferences sp=getSharedPreferences("key", Context.MODE_PRIVATE);
+            selectedFileName = sp.getString("selected_file","");
+        }
 
 
     }
 
+
     private void extracted(String tag) {
-        count = count ++;
-        Log.i("COUNT", "-------->" + count);
-        //Code to check if we are getting the selected file and are able to edit it.
-        // Retrieve the selected file from the intent
+
         Intent intent = getIntent();
         String selectedFileName = intent.getStringExtra("selected_file");
 
@@ -137,17 +199,14 @@ public class Scan extends AppCompatActivity {
             selectedFileName = Utilities.putFormattedName(selectedFileName);
         }
 
-       // File documentsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
         File documentsDirectory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
         File selectedFile = new File(documentsDirectory, "CFMEU_Meetings/" + selectedFileName);
 
-        //Utilities.getFileXlsxByFolder2( selectedFile );
-
         Utilities.activeUserIntoExcel(selectedFile, tag, countTextView);
 
-        int count = Integer.parseInt(countTextView.getText().toString());
-        count++;
-        countTextView.setText(String.valueOf(count));
+//        int count = Integer.parseInt(countTextView.getText().toString());
+        //count++;
+        //countTextView.setText(String.valueOf(count));
     }
 
     private void extracted2(String tag) {
@@ -157,6 +216,7 @@ public class Scan extends AppCompatActivity {
         if( selectedFileName == null ){
             SharedPreferences sp=getSharedPreferences("key", Context.MODE_PRIVATE);
             selectedFileName = sp.getString("selected_file","");
+            selectedFileName = Utilities.putFormattedName(selectedFileName);
         }
 
         // File documentsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
@@ -195,7 +255,12 @@ public class Scan extends AppCompatActivity {
                 status.setText("Active");
                 extracted(tagId);
             } else {
-                status.setText("Inactive");
+                String inactiveText = "Inactive";
+                SpannableString spannableString = new SpannableString(inactiveText);
+                ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.RED);
+                spannableString.setSpan(colorSpan, 0, inactiveText.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+
+                status.setText(spannableString);
                 extracted2(tagId);
             }
         }

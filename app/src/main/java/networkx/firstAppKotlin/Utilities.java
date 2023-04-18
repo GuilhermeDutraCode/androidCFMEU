@@ -1,5 +1,7 @@
 package networkx.firstAppKotlin;
 
+import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -73,6 +75,41 @@ public class Utilities {
         }
     }
 
+         public static void  storageLocation(View view, Context context) {
+            File ourFileDirectory = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+            String S1 =  ourFileDirectory.toString();
+            S1 = S1.replace("/storage/emulated/0", "Internal Storage");
+            S1 = S1.replace("/", " > ");
+            S1 = S1 + " > CFMEU_Meeting";
+
+
+
+            TextView sPath = view.findViewById(R.id.sPath);
+            sPath.setText(S1);
+
+        }
+
+        public static void deletedMeetingsPath(View view, Context context){
+            File ourFileDirectory = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+            String S1 =  ourFileDirectory.toString();
+            S1 = S1.replace("/storage/emulated/0", "Internal Storage");
+            S1 = S1.replace("/", " > ");
+            S1 = S1 + " > Deleted_Meetings";
+
+            TextView dPath = view.findViewById(R.id.dPath);
+            dPath.setText(S1);
+        }
+
+    public static void tagsLocation(View view, Context context){
+        File ourFileDirectory = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+        String S1 =  ourFileDirectory.toString();
+        S1 = S1.replace("/storage/emulated/0", "Internal Storage");
+        S1 = S1.replace("/", " > ");
+
+
+        TextView tPath = view.findViewById(R.id.tPath);
+        tPath.setText(S1);
+    }
 
 
 
@@ -85,15 +122,16 @@ public class Utilities {
             //int lastRow = -1; // get last row with content
 
             int lastRow = sheet.getLastRowNum(); // get last row with content
-            int tagCount = countTags(sheet);
+//            int tagCount = countTags(sheet);
             //createContent(sheet, creationHelper, lastRow);
             createContent2(sheet, creationHelper, lastRow, tag);
             try (OutputStream fileOut = new FileOutputStream( file )) {
                 wb.write(fileOut);
             }
 
-            TextView countTextView = view.findViewById(R.id.layout);
-            countTextView.setText("Total tags: " + tagCount);
+            TextView countTextView = view.findViewById(R.id.countTextView);
+            countTextView.setText(String.valueOf(lastRow));
+
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -140,16 +178,8 @@ public class Utilities {
 
 
     public static void createContent2(Sheet sheet, CreationHelper creationHelper, int lastRow, String tag){
-//        int coll = 1;
-//        Row row = sheet.createRow(lastRow + 1);
-//        for(int j = 0; j < coll; j ++){
-//            Cell cell = row.createCell( j );
-//            //String[] tagId = new String[0];
-//            cell.setCellValue( creationHelper.createRichTextString( tag ) );
-//        }
 
         int rowNum = sheet.getLastRowNum();
-
         // Check if ID already exists in the sheet
         for (int i = 0; i <= rowNum; i++) {
             Row row = sheet.getRow(i);
@@ -159,14 +189,13 @@ public class Utilities {
                     String cellValue = cell.getStringCellValue();
                     if (cellValue != null && cellValue.equals(tag)) {
                         // ID already exists, do not create new row
-                        Toast.makeText(null, "Member already added into my meeting", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(null, "Member already added into my meeting", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
             }
         }
 
-        // ID does not exist, create new row
         Row row = sheet.createRow(rowNum + 1);
         Cell cell = row.createCell(0);
         cell.setCellValue(creationHelper.createRichTextString(tag));

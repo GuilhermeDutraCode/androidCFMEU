@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         val goToExistingMeetings = findViewById<Button>(R.id.button2)
         val goToCheckCard = findViewById<Button>(R.id.button4)
         val goToScan = findViewById<Button>(R.id.button5)
+        val goToSettings = findViewById<Button>(R.id.button3)
 
         goToNewMeeting.setOnClickListener{
             val intent = Intent(this, NewMeeting::class.java)
@@ -48,6 +49,11 @@ class MainActivity : AppCompatActivity() {
         }
         goToScan.setOnClickListener{
             val intent = Intent(this, SelectMeetingToScan::class.java)
+            startActivity(intent)
+        }
+
+        goToSettings.setOnClickListener{
+            val intent = Intent(this, Settings::class.java)
             startActivity(intent)
         }
 
