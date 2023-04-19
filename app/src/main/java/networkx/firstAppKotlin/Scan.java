@@ -111,7 +111,7 @@ public class Scan extends AppCompatActivity {
                 String line;
                 while ((line = br.readLine()) != null) {
                     tags.add(line);
-                    Toast.makeText(this, "tamo no tags", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "tamo no tags", Toast.LENGTH_SHORT).show();
                     Log.d("Tags", line);
                 }
                 br.close();
@@ -202,29 +202,32 @@ public class Scan extends AppCompatActivity {
         File documentsDirectory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
         File selectedFile = new File(documentsDirectory, "CFMEU_Meetings/" + selectedFileName);
 
-        Utilities.activeUserIntoExcel(selectedFile, tag, countTextView);
+        TextView countTextView = findViewById(R.id.countTextView);
+        TextView alreadyInTextView = findViewById(R.id.alreadyIn);
+        alreadyInTextView.setText("");
 
-//        int count = Integer.parseInt(countTextView.getText().toString());
-        //count++;
-        //countTextView.setText(String.valueOf(count));
+
+        Utilities.activeUserIntoExcel(selectedFile, tag, countTextView, alreadyInTextView);
     }
 
     private void extracted2(String tag) {
         Intent intent = getIntent();
         String selectedFileName = intent.getStringExtra("selected_file");
-
+      //  TextView countTextView = findViewById(R.id.countTextView);
+        TextView alreadyInTextView = findViewById(R.id.alreadyIn);
+        alreadyInTextView.setText("");
         if( selectedFileName == null ){
             SharedPreferences sp=getSharedPreferences("key", Context.MODE_PRIVATE);
             selectedFileName = sp.getString("selected_file","");
             selectedFileName = Utilities.putFormattedName(selectedFileName);
         }
 
-        // File documentsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+
         File documentsDirectory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
         File selectedFile = new File(documentsDirectory, "CFMEU_Meetings/" + selectedFileName);
 
-        //Utilities.getFileXlsxByFolder2( selectedFile );
-        Utilities.inactiveUserIntoExcel(selectedFile, tag);
+
+        Utilities.inactiveUserIntoExcel(selectedFile, tag, alreadyInTextView);
     }
 
 
@@ -266,23 +269,6 @@ public class Scan extends AppCompatActivity {
         }
     }
 
-    private void buildTagViews(NdefMessage[] msgs) {
-        if (msgs == null || msgs.length == 0) return;
-
-        String text = "";
-
-        byte[] payLoad = msgs[0].getRecords()[0].getPayload();
-        String textEnconding = ((payLoad[0] & 128) == 0) ? "UTF-8" : "UTF-16";
-        int languageCodeLength = payLoad[0] & 0063; //Get The Language code, e.g 'Pt
-
-        try {
-            //get the text
-            text = new String(payLoad, languageCodeLength + 1, payLoad.length - languageCodeLength - 1, textEnconding);
-        } catch (UnsupportedEncodingException e) {
-            Log.e("Unsuported Enconding of message", e.toString());
-        }
-        nfc_contents.setText("NFC content" + text);
-    }
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -290,7 +276,7 @@ public class Scan extends AppCompatActivity {
         setIntent(intent);
         readFromIntent(getIntent());
         if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(getIntent().getAction())) {
-//
+
         }
     }
 

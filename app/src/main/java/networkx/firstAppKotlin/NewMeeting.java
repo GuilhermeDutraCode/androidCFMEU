@@ -138,6 +138,9 @@ public class NewMeeting extends AppCompatActivity {
 
         EditText fileNameEditText = findViewById(R.id.filename_input);
         String fileNameInput = fileNameEditText.getText().toString().trim();
+        if(fileNameInput.contains(" ")){
+           fileNameInput = fileNameInput.replace(" ", "_");
+        }
 
         if (fileNameInput.isEmpty()) {
             Toast.makeText(this, "Please enter a file name", Toast.LENGTH_SHORT).show();
@@ -155,6 +158,14 @@ public class NewMeeting extends AppCompatActivity {
             sdf.applyPattern("yyyy-MM-dd");
             String formattedDate = sdf.format(date);
             String fileName = formattedDate + "__" + fileNameInput + ".xlsx";
+
+      //      String displayName = fileNameInput + "  " + formattedDate;
+
+            String newName = "";
+            if(fileNameInput.contains("_")){
+                 newName = fileNameInput.replace("_", " ");
+                 String displayName = newName + "  " + formattedDate;
+            }
             String displayName = fileNameInput + "  " + formattedDate;
 
             File excelFile = new File(folderPath, fileName);

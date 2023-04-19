@@ -1,6 +1,7 @@
 package networkx.firstAppKotlin;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -23,6 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class Utilities {
@@ -114,25 +117,22 @@ public class Utilities {
 
 
     //static TextView countTextView = findViewById(R.id.countTextView);
-    public static void activeUserIntoExcel(File file, String tag, View view){
-        try ( InputStream inp = new FileInputStream(file)){
+    public static void activeUserIntoExcel(File file, String tag, TextView countTextView, TextView alreadyInTextView){
+        try (InputStream inp = new FileInputStream(file)) {
             Workbook wb = WorkbookFactory.create(inp);
             CreationHelper creationHelper = wb.getCreationHelper();
-            Sheet sheet = wb.getSheet("Active");
-            //int lastRow = -1; // get last row with content
 
-            int lastRow = sheet.getLastRowNum(); // get last row with content
-//            int tagCount = countTags(sheet);
-            //createContent(sheet, creationHelper, lastRow);
-            createContent2(sheet, creationHelper, lastRow, tag);
-            try (OutputStream fileOut = new FileOutputStream( file )) {
+            Sheet sheet = wb.getSheet("Active");
+          //  int lastRow = sheet.getLastRowNum(); //ultima cell com any data
+            //countTextView.setText("1");
+            createContent2(sheet, creationHelper,  tag, alreadyInTextView, 0);
+            try (OutputStream fileOut = new FileOutputStream(file)) {
                 wb.write(fileOut);
             }
-
-            TextView countTextView = view.findViewById(R.id.countTextView);
+            int lastRow = sheet.getLastRowNum() == 0? 1: sheet.getLastRowNum();
+           // createContent2(sheet, creationHelper, lastRow, tag, alreadyInTextView);
             countTextView.setText(String.valueOf(lastRow));
-
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -159,7 +159,7 @@ public class Utilities {
 
 
 
-    public static void inactiveUserIntoExcel(File file,String tag){
+    public static void inactiveUserIntoExcel(File file,String tag, TextView alreadyInTextView){
         try ( InputStream inp = new FileInputStream(file)){
             Workbook wb = WorkbookFactory.create(inp);
             CreationHelper creationHelper = wb.getCreationHelper();
@@ -167,7 +167,7 @@ public class Utilities {
             //int lastRow = -1; // get last row with content
             int lastRow = sheet.getLastRowNum(); // get last row with content
             //createContent(sheet, creationHelper, lastRow);
-            createContent2(sheet, creationHelper, lastRow, tag);
+            createContent2(sheet, creationHelper,  tag, alreadyInTextView,  lastRow);
             try (OutputStream fileOut = new FileOutputStream( file )) {
                 wb.write(fileOut);
             }
@@ -177,9 +177,9 @@ public class Utilities {
     }
 
 
-    public static void createContent2(Sheet sheet, CreationHelper creationHelper, int lastRow, String tag){
-
+    public static void createContent2(Sheet sheet, CreationHelper creationHelper, String tag, TextView alreadyInTextView, int lastRow){
         int rowNum = sheet.getLastRowNum();
+        alreadyInTextView.setText("");
         // Check if ID already exists in the sheet
         for (int i = 0; i <= rowNum; i++) {
             Row row = sheet.getRow(i);
@@ -189,7 +189,8 @@ public class Utilities {
                     String cellValue = cell.getStringCellValue();
                     if (cellValue != null && cellValue.equals(tag)) {
                         // ID already exists, do not create new row
-                        //Toast.makeText(null, "Member already added into my meeting", Toast.LENGTH_SHORT).show();
+                        alreadyInTextView.setText("Member presence already added to meeting");
+                        alreadyInTextView.setTextColor(Color.RED);
                         return;
                     }
                 }
@@ -198,7 +199,13 @@ public class Utilities {
 
         Row row = sheet.createRow(rowNum + 1);
         Cell cell = row.createCell(0);
-        cell.setCellValue(creationHelper.createRichTextString(tag));
+        cell.setCellValue(creationHelper.createRichTextString(tag));;
+
+        CellStyle timeStyle = sheet.getWorkbook().createCellStyle();
+        timeStyle.setDataFormat(creationHelper.createDataFormat().getFormat("h:mm:ss a"));
+        Cell cell2 = row.createCell(1);
+        cell2.setCellValue(new Date());
+        cell2.setCellStyle(timeStyle);
     }
 }
 
