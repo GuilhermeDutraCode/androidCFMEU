@@ -102,8 +102,9 @@ public class NewMeeting extends AppCompatActivity {
         Workbook ourWorkbook = new XSSFWorkbook();
 
         Sheet sheet = ourWorkbook.createSheet("Active");
-        ourWorkbook.createSheet("Inactive");
+        Sheet sheet2 =  ourWorkbook.createSheet("Inactive");
         addData(sheet);
+        addData(sheet2);
 
         return ourWorkbook;
     }
@@ -112,6 +113,12 @@ public class NewMeeting extends AppCompatActivity {
         int numCols = 2; // Number of columns
         int numRows = 400; // Number of rows
 
+        Row headerRow = sheet.createRow(0);
+        Cell memberIdCell = headerRow.createCell(0);
+        memberIdCell.setCellValue("Member ID");
+        Cell lastScannedCell = headerRow.createCell(1);
+        lastScannedCell.setCellValue("Time Scanned");
+
         // Create empty rows and cells
         for (int i = 0; i < numRows; i++) {
             //Row row = sheet.createRow(i);
@@ -119,7 +126,17 @@ public class NewMeeting extends AppCompatActivity {
                 //createCell(row, j, "");
             }
         }
+
+//        Row headerRow = sheet.getRow(0);
+//        Cell memberIdHeader = headerRow.getCell(0);
+//        memberIdHeader.setCellValue("Member Id");
+//
+//        Row headerRow2 = sheet.getRow(01);
+//        Cell timeScanned = headerRow2.getCell(0);
+//        timeScanned.setCellValue("Time Scanned");
+
     }
+
 
     private void createCell(@NonNull Row sheetRow, int columnIndex, String cellValue) {
         Cell ourCell = sheetRow.createCell(columnIndex);

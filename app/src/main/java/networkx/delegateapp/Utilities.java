@@ -45,6 +45,7 @@ public class Utilities {
         } catch (Exception e) {
             Log.d("file-jav-err", e.getMessage());
         }
+
         return fileNames;
     }
 
@@ -117,21 +118,23 @@ public class Utilities {
 
 
     //static TextView countTextView = findViewById(R.id.countTextView);
-    public static void activeUserIntoExcel(File file, String tag, TextView countTextView, TextView alreadyInTextView){
+    public static void activeUserIntoExcel(File file, String tag, String wSheet, TextView countTextView, TextView alreadyInTextView){
         try (InputStream inp = new FileInputStream(file)) {
             Workbook wb = WorkbookFactory.create(inp);
             CreationHelper creationHelper = wb.getCreationHelper();
 
-            Sheet sheet = wb.getSheet("Active");
-          //  int lastRow = sheet.getLastRowNum(); //ultima cell com any data
+            Sheet sheet = wb.getSheet(wSheet);
+            //  int lastRow = sheet.getLastRowNum(); //ultima cell com any data
             //countTextView.setText("1");
-            createContent2(sheet, creationHelper,  tag, alreadyInTextView, 0);
+            createContent2(sheet, creationHelper, tag, alreadyInTextView, 0);
             try (OutputStream fileOut = new FileOutputStream(file)) {
                 wb.write(fileOut);
             }
-            int lastRow = sheet.getLastRowNum() == 0? 1: sheet.getLastRowNum();
-           // createContent2(sheet, creationHelper, lastRow, tag, alreadyInTextView);
+            if (wSheet == "Active"){
+                int lastRow = sheet.getLastRowNum() == 0 ? 1 : sheet.getLastRowNum();
+            // createContent2(sheet, creationHelper, lastRow, tag, alreadyInTextView);
             countTextView.setText(String.valueOf(lastRow));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

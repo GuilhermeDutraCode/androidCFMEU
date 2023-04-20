@@ -1,5 +1,5 @@
 package networkx.firstAppKotlin;
-
+//package networx.deligationapp;
 import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -188,7 +188,7 @@ public class Scan extends AppCompatActivity {
     }
 
 
-    private void extracted(String tag) {
+    private void extracted(String tag, String wSheet) {
 
         Intent intent = getIntent();
         String selectedFileName = intent.getStringExtra("selected_file");
@@ -207,32 +207,10 @@ public class Scan extends AppCompatActivity {
         alreadyInTextView.setText("");
 
 
-        Utilities.activeUserIntoExcel(selectedFile, tag, countTextView, alreadyInTextView);
+        Utilities.activeUserIntoExcel(selectedFile, tag, wSheet, countTextView, alreadyInTextView);
     }
 
-    private void extracted2(String tag) {
-        Intent intent = getIntent();
-        String selectedFileName = intent.getStringExtra("selected_file");
-      //  TextView countTextView = findViewById(R.id.countTextView);
-        TextView alreadyInTextView = findViewById(R.id.alreadyIn);
-        alreadyInTextView.setText("");
-        if( selectedFileName == null ){
-            SharedPreferences sp=getSharedPreferences("key", Context.MODE_PRIVATE);
-            selectedFileName = sp.getString("selected_file","");
-            selectedFileName = Utilities.putFormattedName(selectedFileName);
-        }
-
-
-        File documentsDirectory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
-        File selectedFile = new File(documentsDirectory, "CFMEU_Meetings/" + selectedFileName);
-
-
-        Utilities.inactiveUserIntoExcel(selectedFile, tag, alreadyInTextView);
-    }
-
-
-
-    private void readFromIntent(Intent intent) {
+       private void readFromIntent(Intent intent) {
         String action = intent.getAction();
         if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)
                 || NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)
@@ -256,7 +234,7 @@ public class Scan extends AppCompatActivity {
 
             if (tags.contains(tagId)) {
                 status.setText("Active");
-                extracted(tagId);
+                extracted(tagId, "Active");
             } else {
                 String inactiveText = "Inactive";
                 SpannableString spannableString = new SpannableString(inactiveText);
@@ -264,7 +242,7 @@ public class Scan extends AppCompatActivity {
                 spannableString.setSpan(colorSpan, 0, inactiveText.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
 
                 status.setText(spannableString);
-                extracted2(tagId);
+                extracted(tagId, "Inactive");
             }
         }
     }
